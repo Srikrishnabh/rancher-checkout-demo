@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: checkout-app
+  namespace: checkout
+  labels:
+    app: checkout-app
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: checkout-app
+  template:
+    metadata:
+      labels:
+        app: checkout-app
+    spec:
+      containers:
+      - name: echo
+        image: ealen/echo-server
+        ports:
+        - containerPort: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: checkout-app
+  namespace: checkout
+spec:
+  selector:
+    app: checkout-app
+  ports:
+  - port: 80
+    targetPort: 80
+    protocol: TCP
